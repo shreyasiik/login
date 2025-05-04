@@ -1,44 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Success</title>
-    <style>
-        body {
-            background-color: #1e1e2f;
-            color: white;
-            font-family: Helvetica, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        .success-box {
-            background-color: #2c2c3b;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-            max-width: 600px;
-        }
-        video {
-            margin-top: 20px;
-            border-radius: 8px;
-            max-width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="success-box">
-        <h1>{{ message }}</h1>
-        <p style="color: lightgreen;">✅ Access granted</p>
+<div class="success-box">
+    <h1>{{ message }}</h1>
+    <p style="color: lightgreen;">{{ message }}</p>
 
-        {% if video_file %}
+    {% if video_file %}
+    <p style="cursor: pointer; color: #4CAF50; text-decoration: underline;" onclick="toggleVideo()">
+        ▶️ Click!!!!! 
+    </p>
+
+    <div id="video-container" style="display: none; margin-top: 20px;">
         <video width="320" height="240" controls autoplay>
             <source src="{{ url_for('static', filename=video_file) }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        {% endif %}
     </div>
-</body>
-</html>
+
+    <script>
+        function toggleVideo() {
+            const videoDiv = document.getElementById("video-container");
+            videoDiv.style.display = (videoDiv.style.display === "none") ? "block" : "none";
+        }
+    </script>
+    {% endif %}
+</div>
