@@ -19,24 +19,21 @@ def index():
     if session.get("locked_out"):
         if request.method == "POST":
             unlock_input = request.form["access_code"].strip()
-
-            # Check if the unlock code is correct
             if unlock_input == UNLOCK_CODE:
-                session.clear()  # Reset the session and attempts
+                session.clear()  # Reset the session
                 return render_template("login.html", success_message="✅ Account unlocked! You can now try again.")
             else:
                 return render_template("locked.html", error_message="🔓 Invalid unlock code. Try again.")
-
-        return render_template("locked.html")  # If locked out, show locked screen
+        return render_template("locked.html")
 
     if request.method == "POST":
         user_input = request.form["access_code"].strip()
 
-        # Initialize attempts if they are not already
+        # Initialize attempts if not already set
         if "attempts" not in session:
             session["attempts"] = 0
 
-       hashed_input = hash_code(user_input)
+        hashed_input = hash_code(user_input)
 
         if hashed_input == "0db431a5f590b7959e157f2906a2218c142a516949ee310c99fbb2965c00e5a8":
             session.pop("attempts", None)
@@ -53,5 +50,5 @@ def index():
                 return render_template("locked.html", error_message="🚨 You are an imposter. Shreyasi shoots you. 💥")
             else:
                 return render_template("login.html", error_message="Invalid code. Try again.")
-    
+
     return render_template("login.html")
