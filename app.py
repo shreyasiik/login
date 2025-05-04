@@ -36,9 +36,16 @@ def index():
         if "attempts" not in session:
             session["attempts"] = 0
 
-        if hash_code(user_input) in VALID_CODES:
-            session.pop("attempts", None)  # Reset attempts if login is successful
-            return render_template("success.html")
+       hashed_input = hash_code(user_input)
+
+        if hashed_input == "0db431a5f590b7959e157f2906a2218c142a516949ee310c99fbb2965c00e5a8":
+            session.pop("attempts", None)
+            return render_template("success.html", message="Access Granted, Mehtaji! 😉")
+
+        elif hashed_input == "21dfe0cd1f7918b8cfa74a89953d09ad2c5963d042c063a2bd0e730af362e0cb":
+            session.pop("attempts", None)
+            return render_template("success.html", message="Access Granted, Waterfight Loser! 💦")
+
         else:
             session["attempts"] += 1
             if session["attempts"] >= 3:
