@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baka Industries Login</title>
+    <style>
+        body {
+            background-color: #1e1e2f;
+            font-family: Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #2c2c3b;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+            width: 350px;
+        }
+        h2 {
+            color: white;
+            font-size: 20px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            color: gray;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🛸 Trial Login Interface</h2>
+        <form method="POST" action="/">
+            <input type="password" name="access_code" placeholder="Enter Password" required>
+            <br>
+            <button type="submit">Authenticate</button>
+        </form>
+        <p class="footer">Authorized users only ⚡</p>
+    </div>
+
+</body>
+</html>
