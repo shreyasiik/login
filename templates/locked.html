@@ -19,12 +19,42 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
         }
+        .error-message {
+            color: red;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="message">
         <h2>🚨 You are an imposter.</h2>
         <p>Shreyasi shoots you. 💥<br>You have been locked out.</p>
+        
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+        
+        <h3>Unlock with the passcode:</h3>
+        <form method="POST">
+            <input type="password" name="access_code" placeholder="Enter unlock code" required>
+            <button type="submit">Unlock</button>
+        </form>
     </div>
 </body>
 </html>
