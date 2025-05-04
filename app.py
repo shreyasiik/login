@@ -37,11 +37,15 @@ def index():
 
         if hashed_input == "0db431a5f590b7959e157f2906a2218c142a516949ee310c99fbb2965c00e5a8":
             session.pop("attempts", None)
-            return render_template("success.html", message="Access Granted, Mehtaji! 😉")
+            return render_template("success.html", 
+                                   message="Access Granted, Mehtaji! 😉", 
+                                   video_file="mehta.mp4")
 
         elif hashed_input == "21dfe0cd1f7918b8cfa74a89953d09ad2c5963d042c063a2bd0e730af362e0cb":
             session.pop("attempts", None)
-            return render_template("success.html", message="Access Granted, Waterfight Loser! 💦")
+            return render_template("success.html", 
+                                   message="Access Granted, Waterfight Loser! 💦", 
+                                   video_file="waterfight.mp4")
 
         else:
             session["attempts"] += 1
