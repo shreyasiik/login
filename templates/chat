@@ -1,95 +1,55 @@
+<!-- templates/chat.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Chat Room</title>
     <style>
         body {
-            background-color: #1e1e2f;
-            color: white;
-            font-family: Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 30px;
         }
-
-        .chat-container {
-            width: 90%;
-            max-width: 600px;
-            margin-top: 50px;
-            background-color: #2c2c3b;
+        .chat-box {
+            background: #1e1e2f;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            max-width: 600px;
+            margin: auto;
         }
-
-        .messages {
-            height: 300px;
-            overflow-y: auto;
-            background-color: #1e1e2f;
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-
         .message {
-            margin-bottom: 10px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 5px;
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
         }
-
-        form {
-            display: flex;
-            gap: 10px;
-        }
-
-        input[type="text"] {
-            flex: 1;
+        input, button {
             padding: 10px;
-            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
             border: none;
-            outline: none;
+            border-radius: 5px;
         }
-
+        input {
+            margin-bottom: 10px;
+        }
         button {
-            background-color: #4caf50;
+            background-color: #4CAF50;
             color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .logout {
-            margin-top: 20px;
-            color: #ccc;
-            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <h2>💬 Welcome to the Chat Room</h2>
-        <div class="messages" id="messages">
-            {% for message in messages %}
-                <div class="message">{{ message }}</div>
-            {% endfor %}
-        </div>
+    <div class="chat-box">
+        <h2>🔒 Private Chat</h2>
 
-        <form method="POST">
-            <input type="text" name="message" placeholder="Type your message..." required />
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+
+        <form method="post">
+            <input type="text" name="message" placeholder="Type your message..." required>
             <button type="submit">Send</button>
         </form>
-
-        <div class="logout">
-            <a href="/">🔒 Log Out or Go Back</a>
-        </div>
     </div>
 </body>
 </html>
