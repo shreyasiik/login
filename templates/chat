@@ -1,55 +1,60 @@
-<!-- templates/chat.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Chat Room</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <style>
         body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            padding: 30px;
-        }
-        .chat-box {
-            background: #1e1e2f;
+            font-family: Arial;
+            background-color: #1e1e2f;
+            color: white;
             padding: 20px;
+        }
+        #chat-box {
+            background: #2c2c3b;
             border-radius: 10px;
-            max-width: 600px;
-            margin: auto;
-        }
-        .message {
-            padding: 5px 0;
-            border-bottom: 1px solid #333;
-        }
-        input, button {
-            padding: 10px;
-            margin-top: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-        }
-        input {
+            padding: 20px;
+            height: 300px;
+            overflow-y: scroll;
             margin-bottom: 10px;
         }
-        button {
+        #message-input {
+            width: 80%;
+            padding: 10px;
+        }
+        #send-button {
+            padding: 10px 15px;
             background-color: #4CAF50;
+            border: none;
             color: white;
             cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="chat-box">
-        <h2>🔒 Private Chat</h2>
+    <h2>Welcome, {{ username }}!</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="message-input" placeholder="Type a message...">
+    <button id="send-button">Send</button>
 
-        {% for message in messages %}
-            <div class="message">{{ message }}</div>
-        {% endfor %}
+    <script>
+        const socket = io();
 
-        <form method="post">
-            <input type="text" name="message" placeholder="Type your message..." required>
-            <button type="submit">Send</button>
-        </form>
-    </div>
+        socket.on("message", function(msg) {
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<p>${msg}</p>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        document.getElementById("send-button").onclick = function() {
+            const input = document.getElementById("message-input");
+            const message = input.value.trim();
+            if (message !== "") {
+                socket.send(message);
+                input.value = "";
+            }
+        };
+    </script>
 </body>
 </html>

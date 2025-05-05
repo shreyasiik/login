@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for 
+import eventlet
+eventlet.monkey_patch()
+
+from flask_socketio import SocketIO, send
 import hashlib
 
 app = Flask(__name__)
-app.secret_key = "super-secret-key"  # Needed for sessions
+app.secret_key = "super-secret-key"
 
-# Global list to store chat messages
+socketio = SocketIO(app, async_mode="eventlet")
+
+
 chat_messages = []
 
 VALID_CODES = [
@@ -57,16 +63,18 @@ def index():
 
     return render_template("login.html")
 
-@app.route("/chat", methods=["GET", "POST"])
+@app.route("/chat")
 def chat():
     if not session.get("logged_in"):
         return redirect(url_for("index"))
+    return render_template("chat.html", username=session["username"])
 
-    if request.method == "POST":
-        msg = request.form.get("message", "").strip()
-        if msg:
-            chat_messages.append(f"{session['username']}: {msg}")
-    return render_template("chat.html", messages=chat_messages)
+@socketio.on("message")
+def handle_message(msg):
+    user = session.get("username", "Anonymous")
+    formatted = f"{user}: {msg}"
+    chat_messages.append(formatted)
+    send(formatted, broadcast=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)
