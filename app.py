@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import hashlib
 
 app = Flask(__name__)
-app.secret_key = "super-secret-key"
+app.secret_key = "super-secret-key"  # Needed for sessions
 
 VALID_CODES = [
     "0db431a5f590b7959e157f2906a2218c142a516949ee310c99fbb2965c00e5a8",
@@ -10,7 +10,7 @@ VALID_CODES = [
 ]
 UNLOCK_CODE = "specialunlockcode"
 
-chat_messages = []  # Stores chat messages globally
+chat_messages = []  # Global list to store chat messages
 
 def hash_code(code):
     return hashlib.sha256(code.encode()).hexdigest()
@@ -34,16 +34,18 @@ def index():
 
         hashed_input = hash_code(user_input)
 
-        if hashed_input in VALID_CODES:
-            session["authenticated"] = True
+        if hashed_input == VALID_CODES[0]:
             session.pop("attempts", None)
+            session["logged_in"] = True
+            session["username"] = "Mehtaji"
+            return redirect(url_for("chat"))
 
-            if hashed_input == VALID_CODES[0]:
-                session["username"] = "Mehtaji"
-                return render_template("success.html", message="Access Granted, Mehtaji! 😉", video_file="mehta.mp4")
-            elif hashed_input == VALID_CODES[1]:
-                session["username"] = "Waterfight Loser"
-                return render_template("success.html", message="Access Granted, Waterfight Loser! 💦", video_file="waterfight.mp4")
+        elif hashed_input == VALID_CODES[1]:
+            session.pop("attempts", None)
+            session["logged_in"] = True
+            session["username"] = "Waterfight Loser"
+            return redirect(url_for("chat"))
+
         else:
             session["attempts"] += 1
             if session["attempts"] >= 3:
@@ -56,20 +58,14 @@ def index():
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
-    if not session.get("authenticated"):
+    if not session.get("logged_in"):
         return redirect(url_for("index"))
 
     if request.method == "POST":
-        message = request.form["message"].strip()
-        username = session.get("username", "User")
-        if message:
-            chat_messages.append(f"{username}: {message}")
+        msg = request.form.get("message", "").strip()
+        if msg:
+            chat_messages.append(f"{session['username']}: {msg}")
     return render_template("chat.html", messages=chat_messages)
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     app.run(debug=True)
